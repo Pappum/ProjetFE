@@ -24,7 +24,7 @@ var Memory = React.createClass({
 
 		var images = [];
 		for (var i = 1 ; i < 9 ; i++) {
-			images.push("../img/0" + i + ".jpg");
+			images.push("img/0" + i + ".jpg");
 		}
 		images = images.concat(images);
 		images = _.shuffle(images);
