@@ -32,7 +32,7 @@ var Memory = React.createClass({
 		for (var i = 0 ; i < images.length ; i++) {
 			cards.push({
 				url: images[i],
-				IsVisible: 1,
+				IsVisible: 0,
 				blocked: 0,
 				playerWinCard: ''
 			});
