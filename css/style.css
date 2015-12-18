@@ -7,8 +7,8 @@ body{
 	padding: 0;
 }
 
-#morpion,
-#morpion div.container{
+#memory,
+#memory div.container{
 	margin: 0 auto;
 	width: 500px;
 	height: 500px;
@@ -20,17 +20,6 @@ body{
 	border: 1px solid black;
 	float: left;
 	cursor: pointer;
-}
-.round{
-	background-image: url(../img/cercle.png);
-	background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.cross{
-	background-image: url(../img/croix.png);
-	background-repeat: no-repeat;
-    background-size: cover;
 }
 
 button{
