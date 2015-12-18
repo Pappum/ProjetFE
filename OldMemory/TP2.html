@@ -1,0 +1,100 @@
+<!doctype html>
+
+<html>
+
+	<head>
+	
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>TP2 - Mémory</title>
+		<script type="text/javascript" src="js/fonction.js"></script>
+
+	</head>
+
+	<body style="text-align:center;" onload="javascript: affichage();">
+		<h2>Mémory</h2>
+
+		<!-- Corps du site -->
+		<table border="0" style="margin:auto;">
+
+			<tr>
+				<td colspan="4">
+					<button onclick="javascript: remiseAZero();">Remise à zéro</button>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<button onclick="javascript: set_mode_1J();">Mode 1 joueur</button>
+				</td>
+				<td>
+					<button onclick="javascript: set_mode_2J();">Mode 2 joueurs</button>
+				</td>
+				<td>Vous êtes en mode :</td>
+				<td id="mode">bla</td>
+			</tr>
+			<tr>
+				<td style="background: initial;color:initial;" id="joueur1">Score joueur 1 :</td>
+				<td id="scoreJ1"></td>
+				<td style="background: initial;color:initial;" id="joueur2">Score Joueur 2 :</td>
+				<td id="scoreJ2"></td>
+			</tr>
+			<tr>
+				<td>
+					<img src="images/back.jpg" id="img0" onclick="javascript: retourne('0');" />
+				</td>
+				<td>
+					<img src="images/back.jpg" id="img1" onclick="javascript: retourne('1');" />
+				</td>
+				<td>
+					<img src="images/back.jpg" id="img2" onclick="javascript: retourne('2');" />
+				</td>
+				<td>
+					<img src="images/back.jpg" id="img3" onclick="javascript: retourne('3');" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="images/back.jpg" id="img4" onclick="javascript: retourne('4');" />
+				</td>
+				<td>
+					<img src="images/back.jpg" id="img5" onclick="javascript: retourne('5');" />
+				</td>
+				<td>
+					<img src="images/back.jpg" id="img6" onclick="javascript: retourne('6');" />
+				</td>
+				<td>
+					<img src="images/back.jpg" id="img7" onclick="javascript: retourne('7');" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="images/back.jpg" id="img8" onclick="javascript: retourne('8');" />
+				</td>
+				<td>
+					<img src="images/back.jpg" id="img9" onclick="javascript: retourne('9');" />
+				</td>
+				<td>
+					<img src="images/back.jpg" id="img10" onclick="javascript: retourne('10');" />
+				</td>
+				<td>
+					<img src="images/back.jpg" id="img11" onclick="javascript: retourne('11');" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="images/back.jpg" id="img12" onclick="javascript: retourne('12');" />
+				</td>
+				<td>
+					<img src="images/back.jpg" id="img13" onclick="javascript: retourne('13');" />
+				</td>
+				<td>
+					<img src="images/back.jpg" id="img14" onclick="javascript: retourne('14');" />
+				</td>
+				<td>
+					<img src="images/back.jpg" id="img15" onclick="javascript: retourne('15');" />
+				</td>
+			</tr>
+		</table>
+
+	</body>
+	
+</html>
