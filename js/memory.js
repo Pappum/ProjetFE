@@ -1,13 +1,10 @@
 var Memory = React.createClass({
 	getInitialState: function(){
-		var card = {url: '../img/01.jpg', IsVisible: 1, blocked: 0, playerWinCard: ''};
-		var card2 = {url: '../img/01.jpg', IsVisible: 0, blocked: 0, playerWinCard: ''};
+		// var card = {url: '../img/01.jpg', IsVisible: 1, blocked: 0, playerWinCard: ''};
+		// var card2 = {url: '../img/01.jpg', IsVisible: 0, blocked: 0, playerWinCard: ''};
+		// this.generateCards()
 		return {
-			table: [
-				[card, card2, card],
-				[card, card, card],
-				[card, card, card]
-			],
+			table: this.generateCards(),
 			player: '',
 			score: '',
 			backUrl: '../img/back.jpg',
@@ -15,6 +12,39 @@ var Memory = React.createClass({
 			FirstClick: '',
 			FirstCard: ''
 		};
+	},
+	generateCards: function() {
+		var cards = [];
+		var finalArray = [
+			['', '', '', ''],
+			['', '', '', ''],
+			['', '', '', ''],
+			['', '', '', '']
+		];
+
+		var images = [];
+		for (var i = 0 ; i < 8 ; i++) {
+			images.push("../img/0" + i + ".jpg");
+		}
+		images = images.concat(images);
+		images = _.shuffle(images);
+
+		for (var i = 0 ; i < images.length ; i++) {
+			cards.push({
+				url: images[i],
+				IsVisible: 1,
+				blocked: 0,
+				playerWinCard: ''
+			});
+
+			var modulo = i%4
+			var division = i/4
+			var entierdivision = parseInt(division)
+			finalArray[modulo][entierdivision] = cards[i]
+		}
+		console.log(images)
+		console.log(finalArray)
+		return finalArray
 	},
 	play: function(x, y) {
 		return function() {
@@ -58,13 +88,33 @@ var Memory = React.createClass({
 	}
 });
 
-var ar = Array.apply(null, Array(8)).map(Number.prototype.valueOf,0);
-var urls = ar.map(function(_, i) {
-	return '../img/0'+i+'.jpg'
-})
-console.log(urls)
+// var ar = Array.apply(null, Array(8)).map(Number.prototype.valueOf,0);
+// var urls = ar.map(function(_, i) {
+// 	return '../img/0'+i+'.jpg'
+// })
+// console.log(urls)
+
+// var card = []
+
+// function generateTiles() {
+// 	var images = [];
+// 	for (var i = 1; i < 8; i++) {
+// 		images.push("../img/0" + i + ".jpg");
+// 	}
+// 	images = images.concat(images);
+// 	images = _.shuffle(images);
+// 	for (var i = 0; i < images.length; i++) {
+// 		card.push({
+// 			image: images[i],
+// 			IsVisible: 1,
+// 			blocked: 0,
+// 			playerWinCard: ''
+// 		});
+// 	}
+// 	console.log(images)
+// }
 
 ReactDOM.render(
-	<Memory urls={urls}/>,
+	<Memory />,
 	document.getElementById('memory')
 );
