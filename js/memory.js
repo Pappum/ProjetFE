@@ -127,7 +127,7 @@ var Memory = React.createClass({
 			if(this.getScore(1) > this.getScore(2)) {
 				winner = 'Joueur 1'
 			}
-			else if(this.getScore(1) = this.getScore(2)) {
+			else if(this.getScore(1) == this.getScore(2)) {
 				winner = 'Egalité'
 			}
 			else {
