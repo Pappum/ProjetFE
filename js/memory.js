@@ -4,7 +4,7 @@ var Memory = React.createClass({
 			table: this.generateCards(),
 			player: '',
 			score: '',
-			backUrl: '../img/back.jpg',
+			backUrl: 'img/back.jpg',
 			win: 'false',
 			firstClick: true,
 			firstCard: ''
@@ -60,7 +60,18 @@ var Memory = React.createClass({
 				
 				newTable[x][y].isVisible = 0
 				this.setState({firstClick: true, isVisible: 0, table: newTable})
+
+			console.log(newTable[x][y])
+
+			if(newTable[x][y].IsVisible == 0) {
+				newTable[x][y].IsVisible = 1
+				this.setState({table: newTable})
+				//console.log(newTable[x][y])
 			}
+			else {
+				alert('Vous avez déjà retourné cette carte !');
+			}
+
 		}.bind(this)
 	},
 	render: function(){

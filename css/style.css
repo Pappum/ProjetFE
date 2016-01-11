@@ -10,9 +10,15 @@ body{
 #memory,
 #memory div.container{
 	margin: 0 auto;
+<<<<<<< Updated upstream
 	width: 700px;
 	height: 700px;
 	margin-top: 40px;
+=======
+	width: 500px;
+	height: 500px;
+	margin-top: 20px;
+>>>>>>> Stashed changes
 }
 .cell{
 	width: 25%;
