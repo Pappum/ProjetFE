@@ -48,29 +48,37 @@ var Memory = React.createClass({
 		return function() {
 			var newTable = this.state.table
 
-			var firstCardUrl = newTable[x][y].url
+			var firstCardProps
 
-			if(this.state.firstClick == true) {
-				firstCardUrl = newTable[x][y].url
-
-				newTable[x][y].isVisible = 1
-				this.setState({firstClick: false, firstCard: firstCardUrl, table: newTable})
+			if (newTable[x][y].blocked == true) {
+				alert('nein');
 			}
 			else {
-				
-				newTable[x][y].isVisible = 0
-				this.setState({firstClick: true, isVisible: 0, table: newTable})
+				if(this.state.firstClick == true) {
+					firstCardProps = newTable[x][y]
 
-			console.log(newTable[x][y])
+					newTable[x][y].isVisible = 1
+					this.setState({firstClick: false, firstCard: firstCardProps, table: newTable})
+				}
+				else {
+					newTable[x][y].isVisible = 1
+					this.setState({firstClick: true, table: newTable})
 
-			if(newTable[x][y].IsVisible == 0) {
-				newTable[x][y].IsVisible = 1
-				this.setState({table: newTable})
-				//console.log(newTable[x][y])
+					if(newTable[x][y].url == this.state.firstCard.url) {
+						newTable[x][y].blocked = true;
+						var PC = this.state.firstCard;
+						PC.blocked = true;
+						alert('champion');
+					}
+					else {
+						newTable[x][y].isVisible = 0;
+						var PC = this.state.firstCard;
+						PC.isVisible = 0;
+					}
+				}
 			}
-			else {
-				alert('Vous avez déjà retourné cette carte !');
-			}
+
+			console.log(newTable[x][y]);
 
 		}.bind(this)
 	},
