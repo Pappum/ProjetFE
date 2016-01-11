@@ -92,9 +92,7 @@ var Memory = React.createClass({
 					}
 				}
 			}
-
 			console.log(newTable[x][y])
-
 		}.bind(this)
 	},
 	getScore: function(player) {

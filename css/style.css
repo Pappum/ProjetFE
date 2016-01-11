@@ -11,8 +11,7 @@ body{
 #memory div.container{
 	margin: 0 auto;
 	width: 700px;
-	height: 700px;
-	margin-top: 40px;
+	overflow: hidden;
 }
 .cell{
 	width: 25%;
