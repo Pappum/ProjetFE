@@ -29,7 +29,6 @@ function retourne(numeroCarte) {
 	if (cliquePossible == true) {
 
 		if(srcCarte == "images/back.jpg") {
-
 			carte.setAttribute("src", "images/"+ liste[numeroCarte] +".jpg");
 		}
 			if(permiereCarte == null) {

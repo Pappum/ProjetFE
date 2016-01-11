@@ -1,28 +1,25 @@
 var Memory = React.createClass({
 	getInitialState: function(){
-		// var card = {url: '../img/01.jpg', IsVisible: 1, blocked: 0, playerWinCard: ''};
-		// var card2 = {url: '../img/01.jpg', IsVisible: 0, blocked: 0, playerWinCard: ''};
-		// this.generateCards()
 		return {
 			table: this.generateCards(),
 			player: '',
 			score: '',
 			backUrl: '../img/back.jpg',
 			win: 'false',
-			FirstClick: '',
-			FirstCard: ''
+			firstClick: true,
+			firstCard: ''
 		};
 	},
 	generateCards: function() {
-		var cards = [];
 		var finalArray = [
 			['', '', '', ''],
 			['', '', '', ''],
 			['', '', '', ''],
 			['', '', '', '']
 		];
-
 		var images = [];
+		var cards = [];
+
 		for (var i = 1 ; i < 9 ; i++) {
 			images.push("img/0" + i + ".jpg");
 		}
@@ -32,8 +29,8 @@ var Memory = React.createClass({
 		for (var i = 0 ; i < images.length ; i++) {
 			cards.push({
 				url: images[i],
-				IsVisible: 0,
-				blocked: 0,
+				isVisible: false,
+				blocked: false,
 				playerWinCard: ''
 			});
 
@@ -44,19 +41,25 @@ var Memory = React.createClass({
 		}
 		return finalArray
 	},
+	clickTile: function(id) {
+		cards[id].flipped = true;
+	},
 	play: function(x, y) {
 		return function() {
 			var newTable = this.state.table
-			console.log(newTable[x][y])
-			if(newTable[x][y].IsVisible == 0) {
-				newTable[x][y].IsVisible = 1
-				this.setState({table: newTable})
-				console.log(newTable[x][y])
+
+			var firstCardUrl = newTable[x][y].url
+
+			if(this.state.firstClick == true) {
+				firstCardUrl = newTable[x][y].url
+
+				newTable[x][y].isVisible = 1
+				this.setState({firstClick: false, firstCard: firstCardUrl, table: newTable})
 			}
 			else {
-				newTable[x][y].IsVisible = 0
-				this.setState({table: newTable})
-				console.log(newTable[x][y])
+				
+				newTable[x][y].isVisible = 0
+				this.setState({firstClick: true, isVisible: 0, table: newTable})
 			}
 		}.bind(this)
 	},
@@ -68,7 +71,7 @@ var Memory = React.createClass({
 					var id = x+'-'+y
 
 					var src
-					if (this.state.table[x][y].IsVisible == 1) {
+					if (this.state.table[x][y].isVisible == 1) {
 						src = this.state.table[x][y].url
 					}
 					else {
