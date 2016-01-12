@@ -12,12 +12,11 @@ var Memory = React.createClass({
 		};
 	},
 	generateCards: function() {
-		var finalArray = [
-			['', '', '', ''],
-			['', '', '', ''],
-			['', '', '', ''],
-			['', '', '', '']
-		];
+		var finalArray = _.times(4, function(){
+			return _.times(4, function(){return ''})
+		}) 
+		console.log(finalArray);
+
 		var images = [];
 		var cards = [];
 
@@ -149,7 +148,7 @@ var Memory = React.createClass({
 			 		<select onChange={this.handleChange} >
 						<option value="0" defaultValue>Choisir le niveau</option>
 						<option value="1">16</option>
-						<option value="2">32</option>
+						<option value="2">36</option>
 						<option value="3">64</option>
 					</select>
 				</div>
