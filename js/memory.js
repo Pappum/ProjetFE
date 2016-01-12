@@ -87,7 +87,7 @@ var Memory = React.createClass({
 							newTable[x][y].isVisible = 0;
 							PC.isVisible = 0;
 							self.state.player == 1 ? player = 2 : player = 1;
-							self.setState({table: newTable, clickCount: 0, player: player})
+							self.setState({table: newTable, clickCount: 0, player: player, firstCard: ''})
 						}, 1000);
 					}
 				}
