@@ -3,6 +3,7 @@ var Memory = React.createClass({
 		return {
 			table: this.generateCards(),
 			player: 1,
+			level: 0,
 			score: '',
 			backUrl: 'img/back.jpg',
 			win: 'false',
@@ -136,14 +137,32 @@ var Memory = React.createClass({
 			return winner;
 		}
 	},
+	handleChange:function(e){
+		this.setState({level: e.target.value});
+	},
 	render: function(){
+		var message='You selected '+this.state.level;
 		return(
-			 <div className="container">
-			 	<div className="score">
-			 		<p>Score joueur 1 = {this.getScore(1)}</p>
-			 		<p>Score joueur 2 = {this.getScore(2)}</p>
-			 		<p>All flipped : {this.getAllFlipped()}</p>
-			 	</div>
+			<div className="container">
+				{/* Selection niveaux */}
+				<div>
+			 		<select onChange={this.handleChange} >
+						<option value="0" defaultValue>Choisir le niveau</option>
+						<option value="1">16</option>
+						<option value="2">32</option>
+						<option value="3">64</option>
+					</select>
+				</div>
+
+				{/* Affichage score */}
+				<div className="score">
+					<p>Score joueur 1 = {this.getScore(1)}</p>
+					<p>Score joueur 2 = {this.getScore(2)}</p>
+					<p>All flipped : {this.getAllFlipped()}</p>
+				</div>
+
+
+			 	{/* Affichage jeu */}
 				{this.state.table.map(function(_, x){
 					return this.state.table[x].map(function(_, y){
 					var id = x+'-'+y
@@ -160,7 +179,7 @@ var Memory = React.createClass({
 						<div className='cell' id={id} onClick={this.play(x, y)}>
 							<img src={src} />
 						</div>
-					) 
+					)
 				}.bind(this))}.bind(this))}
 			 </div>
 		);
