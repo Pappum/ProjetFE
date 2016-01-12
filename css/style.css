@@ -9,14 +9,20 @@ body{
 
 #memory{
 	width:100%;
+	padding: 20px;
 	margin:auto;
-	padding: 0 20px;
+}
+.container{
+	width:100%;
+	margin:auto;
 	overflow: hidden;
 }
 
+.score{
+	float:left;
+}
+
 .cell{
-	width: 11%;
-	height: 11%;
 	border: 1px solid red;
 	float: left;
 	cursor: pointer;
@@ -30,3 +36,37 @@ body{
 button{
 	margin-bottom: 10px;
 }
+
+/* PAS DE LEVEL */
+.level-0{
+	display: none;
+}
+
+/* LEVEL 1 */
+.level-1{
+	width:40%;
+	margin:auto;
+}
+.level-1 .cell{
+	width: 25%;
+}
+
+/* LEVEL 2 */
+.level-2{
+	width:60%;
+	margin:auto;
+}
+.level-2 .cell{
+	width: 15%;
+}
+
+/* LEVEL 3 */
+.level-3{
+	width:55%;
+	margin:auto;
+}
+.level-3 .cell{
+	width: 12%;
+}
+
+

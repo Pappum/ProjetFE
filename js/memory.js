@@ -1,7 +1,7 @@
 var Memory = React.createClass({
 	getInitialState: function(){
 		return {
-			table: this.generateCards(),
+			table: this.generateCards(0),
 			player: 1,
 			level: '',
 			score: '',
@@ -11,8 +11,7 @@ var Memory = React.createClass({
 			firstCard: ''
 		};
 	},
-	generateCards: function() {
-		var level = this.state ? this.state.level : '1';
+	generateCards: function(level) {
 		var caseLevel
 
 		if(level == '0') {
@@ -28,7 +27,7 @@ var Memory = React.createClass({
 			caseLevel = 8
 		}
 
-		console.log(caseLevel)
+		//console.log(caseLevel)
 
 		var finalArray = _.times(caseLevel, function(){
 			return _.times(caseLevel, function(){return ''})
@@ -58,7 +57,7 @@ var Memory = React.createClass({
 			var entierdivision = parseInt(division)
 			finalArray[modulo][entierdivision] = cards[i]
 		}
-		console.log(finalArray)
+		//console.log(finalArray)
 		return finalArray
 	},
 	clickTile: function(id) {
@@ -67,6 +66,7 @@ var Memory = React.createClass({
 	play: function(x, y) {
 		return function() {
 			var newTable = this.state.table
+			console.log(newTable[x][y])
 
 			var firstCardProps
 
@@ -112,7 +112,7 @@ var Memory = React.createClass({
 					}
 				}
 			}
-			console.log(newTable[x][y])
+			//console.log(newTable[x][y])
 		}.bind(this)
 	},
 	getScore: function(player) {
@@ -155,13 +155,13 @@ var Memory = React.createClass({
 		}
 	},
 	handleChange:function(e){
-		this.setState({level: e.target.value, table: this.generateCards()});
+		this.setState({level:e.target.value, table: this.generateCards(e.target.value)});
 	},
 	render: function(){
 		return(
-			<div className={this.state.level}>
+			<div className="container">
 				{/* Selection niveaux */}
-				<div>
+				<div className="level">
 			 		<select onChange={this.handleChange} >
 						<option value="0" defaultValue>Choisir le niveau</option>
 						<option value="1">16</option>
@@ -177,7 +177,7 @@ var Memory = React.createClass({
 					<p>All flipped : {this.getAllFlipped()}</p>
 				</div>
 
-
+				<div className={'level-'+this.state.level}>
 			 	{/* Affichage jeu */}
 				{this.state.table.map(function(_, x){
 					return this.state.table[x].map(function(_, y){
@@ -197,6 +197,7 @@ var Memory = React.createClass({
 						</div>
 					)
 				}.bind(this))}.bind(this))}
+				</div>
 			 </div>
 		);
 	}
