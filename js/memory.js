@@ -14,18 +14,20 @@ var Memory = React.createClass({
 	},
 	generateCards: function(level) {
 		var caseLevel
-
-		if(level == 0) {
-			caseLevel = 0
-		}
-		else if (level == 1) {
-			caseLevel = 4
-		}
-		else if( level == 2) {
-			caseLevel = 6
-		}
-		else if( level == 3){
-			caseLevel = 8
+		
+		switch (level) {
+			case '1':
+				caseLevel = 4
+				break;
+			case '2':
+				caseLevel = 6
+				break;
+			case '3':
+				caseLevel = 8
+				break;
+			default:
+				caseLevel = 0
+				break;
 		}
 
 		var finalArray = _.times(caseLevel, function(){
