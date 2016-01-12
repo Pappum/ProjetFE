@@ -3,7 +3,7 @@ var Memory = React.createClass({
 		return {
 			table: this.generateCards(),
 			player: 1,
-			level: 0,
+			level: '',
 			score: '',
 			backUrl: 'img/back.jpg',
 			win: 'false',
@@ -12,21 +12,23 @@ var Memory = React.createClass({
 		};
 	},
 	generateCards: function() {
-		var level = this.state ? this.state.level : 1;
-		var caseLevel = 0
+		var level = this.state ? this.state.level : '1';
+		var caseLevel
 
-		if(level == 0) {
+		if(level == '0') {
 			caseLevel = 0
 		}
-		else if (level == 1) {
+		else if (level == '1') {
 			caseLevel = 4
 		}
-		else if( level == 2) {
+		else if( level == '2') {
 			caseLevel = 6
 		}
-		else if( level == 3){
+		else if( level == '3'){
 			caseLevel = 8
 		}
+
+		console.log(caseLevel)
 
 		var finalArray = _.times(caseLevel, function(){
 			return _.times(caseLevel, function(){return ''})
@@ -35,8 +37,10 @@ var Memory = React.createClass({
 		var images = [];
 		var cards = [];
 
-		for (var i = 1 ; i < 9 ; i++) {
-			images.push("img/0" + i + ".jpg");
+		var nbrImg = (caseLevel * caseLevel) / 2
+
+		for (var i = 1 ; i < nbrImg ; i++) {
+			images.push("img/" + i + ".jpg");
 		}
 		images = images.concat(images);
 		images = _.shuffle(images);
@@ -49,11 +53,12 @@ var Memory = React.createClass({
 				playerWinCard: ''
 			});
 
-			var modulo = i%4
-			var division = i/4
+			var modulo = i%caseLevel
+			var division = i/caseLevel
 			var entierdivision = parseInt(division)
 			finalArray[modulo][entierdivision] = cards[i]
 		}
+		console.log(finalArray)
 		return finalArray
 	},
 	clickTile: function(id) {
@@ -123,7 +128,6 @@ var Memory = React.createClass({
 		);
 		var score = tableScore.length / 2
 		return score;
-
 	},
 	getAllFlipped: function() {
 		var tableInOne = _.flatten(this.state.table, true);
@@ -136,7 +140,6 @@ var Memory = React.createClass({
 				}
 			}
 		);
-		console.log(tableFlipped.length)
 		if(tableFlipped.length == 16) {
 			var winner
 			if(this.getScore(1) > this.getScore(2)) {
@@ -152,8 +155,7 @@ var Memory = React.createClass({
 		}
 	},
 	handleChange:function(e){
-		this.setState({level: e.target.value});
-		this.generateCards();
+		this.setState({level: e.target.value, table: this.generateCards()});
 	},
 	render: function(){
 		return(
