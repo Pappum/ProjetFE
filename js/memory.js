@@ -15,20 +15,18 @@ var Memory = React.createClass({
 	generateCards: function(level) {
 		var caseLevel
 
-		if(level == '0') {
+		if(level == 0) {
 			caseLevel = 0
 		}
-		else if (level == '1') {
+		else if (level == 1) {
 			caseLevel = 4
 		}
-		else if( level == '2') {
+		else if( level == 2) {
 			caseLevel = 6
 		}
-		else if( level == '3'){
+		else if( level == 3){
 			caseLevel = 8
 		}
-
-		//console.log(caseLevel)
 
 		var finalArray = _.times(caseLevel, function(){
 			return _.times(caseLevel, function(){return ''})
@@ -39,7 +37,7 @@ var Memory = React.createClass({
 
 		var nbrImg = (caseLevel * caseLevel) / 2
 
-		for (var i = 1 ; i <= nbrImg ; i++) {
+		for (var i = 1 ; i <= nbrImg; i++) {
 			images.push("img/" + i + ".jpg");
 		}
 		images = images.concat(images);
@@ -175,9 +173,9 @@ var Memory = React.createClass({
 				<div className="speedFlip">
 			 		<select onChange={this.handleChangeSpeed} >
 						<option value="0" defaultValue>Choisir la vitesse</option>
-						<option value={100}>1000</option>
-						<option value={100}>500</option>
-						<option value={100}>250</option>
+						<option value="1000">1000</option>
+						<option value="500">500</option>
+						<option value="250">250</option>
 					</select>
 				</div>
 
@@ -189,6 +187,7 @@ var Memory = React.createClass({
 				</div>
 
 				<div className={'level-'+this.state.level}>
+
 			 	{/* Affichage jeu */}
 				{this.state.table.map(function(_, x){
 					return this.state.table[x].map(function(_, y){
