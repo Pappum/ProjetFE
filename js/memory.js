@@ -8,7 +8,8 @@ var Memory = React.createClass({
 			backUrl: 'img/back.jpg',
 			win: 'false',
 			clickCount: 0,
-			firstCard: ''
+			firstCard: '',
+			speed: 1000
 		};
 	},
 	generateCards: function(level) {
@@ -38,7 +39,7 @@ var Memory = React.createClass({
 
 		var nbrImg = (caseLevel * caseLevel) / 2
 
-		for (var i = 1 ; i < nbrImg ; i++) {
+		for (var i = 1 ; i <= nbrImg ; i++) {
 			images.push("img/" + i + ".jpg");
 		}
 		images = images.concat(images);
@@ -57,7 +58,6 @@ var Memory = React.createClass({
 			var entierdivision = parseInt(division)
 			finalArray[modulo][entierdivision] = cards[i]
 		}
-		//console.log(finalArray)
 		return finalArray
 	},
 	clickTile: function(id) {
@@ -66,7 +66,6 @@ var Memory = React.createClass({
 	play: function(x, y) {
 		return function() {
 			var newTable = this.state.table
-			console.log(newTable[x][y])
 
 			var firstCardProps
 
@@ -108,11 +107,10 @@ var Memory = React.createClass({
 							PC.isVisible = 0;
 							self.state.player == 1 ? player = 2 : player = 1;
 							self.setState({table: newTable, clickCount: 0, player: player, firstCard: ''})
-						}, 1000);
+						}, this.state.speed);
 					}
 				}
 			}
-			//console.log(newTable[x][y])
 		}.bind(this)
 	},
 	getScore: function(player) {
@@ -154,19 +152,32 @@ var Memory = React.createClass({
 			return winner;
 		}
 	},
-	handleChange:function(e){
-		this.setState({level:e.target.value, table: this.generateCards(e.target.value)});
+	handleChangeLevel:function(e){
+		this.setState({level: e.target.value, table: this.generateCards(e.target.value)});
+	},
+	handleChangeSpeed:function(e){
+		this.setState({speed: e.target.value});
 	},
 	render: function(){
 		return(
 			<div className="container">
 				{/* Selection niveaux */}
 				<div className="level">
-			 		<select onChange={this.handleChange} >
+					<select onChange={this.handleChangeLevel} >
 						<option value="0" defaultValue>Choisir le niveau</option>
 						<option value="1">16</option>
 						<option value="2">36</option>
 						<option value="3">64</option>
+					</select>
+				</div>
+
+			{/* Selection vitesse de retournement */}
+				<div className="speedFlip">
+			 		<select onChange={this.handleChangeSpeed} >
+						<option value="0" defaultValue>Choisir la vitesse</option>
+						<option value={100}>1000</option>
+						<option value={100}>500</option>
+						<option value={100}>250</option>
 					</select>
 				</div>
 
