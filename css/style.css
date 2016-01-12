@@ -7,15 +7,16 @@ body{
 	padding: 0;
 }
 
-#memory,
-#memory div.container{
-	margin: 0 auto;
-	width: 700px;
+#memory{
+	width:100%;
+	margin:auto;
+	padding: 0 20px;
 	overflow: hidden;
 }
+
 .cell{
-	width: 25%;
-	height: 25%;
+	width: 11%;
+	height: 11%;
 	border: 1px solid red;
 	float: left;
 	cursor: pointer;

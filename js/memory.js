@@ -12,8 +12,9 @@ var Memory = React.createClass({
 		};
 	},
 	generateCards: function() {
-		var level = 0
+		var level = this.state ? this.state.level : 1;
 		var caseLevel = 0
+
 		if(level == 0) {
 			caseLevel = 0
 		}
@@ -152,10 +153,11 @@ var Memory = React.createClass({
 	},
 	handleChange:function(e){
 		this.setState({level: e.target.value});
+		this.generateCards();
 	},
 	render: function(){
 		return(
-			<div className="container">
+			<div className={this.state.level}>
 				{/* Selection niveaux */}
 				<div>
 			 		<select onChange={this.handleChange} >
