@@ -12,10 +12,24 @@ var Memory = React.createClass({
 		};
 	},
 	generateCards: function() {
-		var finalArray = _.times(4, function(){
-			return _.times(4, function(){return ''})
-		}) 
-		console.log(finalArray);
+		var level = 0
+		var caseLevel = 0
+		if(level == 0) {
+			caseLevel = 0
+		}
+		else if (level == 1) {
+			caseLevel = 4
+		}
+		else if( level == 2) {
+			caseLevel = 6
+		}
+		else if( level == 3){
+			caseLevel = 8
+		}
+
+		var finalArray = _.times(caseLevel, function(){
+			return _.times(caseLevel, function(){return ''})
+		})
 
 		var images = [];
 		var cards = [];
@@ -140,7 +154,6 @@ var Memory = React.createClass({
 		this.setState({level: e.target.value});
 	},
 	render: function(){
-		var message='You selected '+this.state.level;
 		return(
 			<div className="container">
 				{/* Selection niveaux */}
