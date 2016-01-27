@@ -3,6 +3,7 @@ var Memory = React.createClass({
 		return {
 			table: this.generateCards(0),
 			player: 1,
+			nbPlayer: 1,
 			level: '',
 			score: '',
 			backUrl: 'img/back.jpg',
@@ -70,47 +71,54 @@ var Memory = React.createClass({
 			var firstCardProps
 
 			if (newTable[x][y].blocked == true || newTable[x][y] == this.state.firstCard) {
-				alert('impossible');
+				return alert('impossible');
+			}
+
+			if (this.state.clickCount == 2) {
+				return alert('attends');
+			}
+
+			if(this.state.clickCount == 0) {
+				firstCardProps = newTable[x][y]
+
+				newTable[x][y].isVisible = 1
+				return this.setState({clickCount: 1, firstCard: firstCardProps, table: newTable})
+			}
+			
+			newTable[x][y].isVisible = 1
+			this.setState({clickCount: 2, table: newTable})
+
+			if(newTable[x][y].url == this.state.firstCard.url) {
+				var PC = this.state.firstCard;
+
+				newTable[x][y].blocked = true;
+				PC.blocked = true;
+
+				newTable[x][y].playerWinCard = this.state.player;
+				PC.playerWinCard = this.state.player;
+
+				this.setState({table: newTable, clickCount: 0})
 			}
 			else {
-				if(this.state.clickCount == 0) {
-					firstCardProps = newTable[x][y]
+				var PC = this.state.firstCard;
+				var self = this
 
-					newTable[x][y].isVisible = 1
-					this.setState({clickCount: 1, firstCard: firstCardProps, table: newTable})
-				}
-				else if (this.state.clickCount == 2) {
-					alert('attends');
-				}
-				else {
-					newTable[x][y].isVisible = 1
-					this.setState({clickCount: 2, table: newTable})
+				var player
+				setTimeout(function() {
+					newTable[x][y].isVisible = 0;
+					PC.isVisible = 0;
 
-					if(newTable[x][y].url == this.state.firstCard.url) {
-						var PC = this.state.firstCard;
-
-						newTable[x][y].blocked = true;
-						PC.blocked = true;
-
-						newTable[x][y].playerWinCard = this.state.player;
-						PC.playerWinCard = this.state.player;
-
-						alert('champion');
-						this.setState({table: newTable, clickCount: 0})
+					if(self.state.nbPlayer != 1){
+						player = self.state.player == 1 ? 2 : 1;
+					}else{
+						player = 1;
 					}
-					else {
-						var PC = this.state.firstCard;
-						var self = this
-						var player
-						setTimeout(function() {
-							newTable[x][y].isVisible = 0;
-							PC.isVisible = 0;
-							self.state.player == 1 ? player = 2 : player = 1;
-							self.setState({table: newTable, clickCount: 0, player: player, firstCard: ''})
-						}, this.state.speed);
-					}
-				}
+					
+					self.setState({table: newTable, clickCount: 0, player: player, firstCard: ''})
+				}, this.state.speed);
+
 			}
+			
 		}.bind(this)
 	},
 	getScore: function(player) {
@@ -158,9 +166,22 @@ var Memory = React.createClass({
 	handleChangeSpeed:function(e){
 		this.setState({speed: e.target.value});
 	},
+	handleChangePlayer:function(e){
+		this.setState({nbPlayer: e.target.value});
+	},
 	render: function(){
 		return(
 			<div className="container">
+
+				{/* Selection du nombre de joueurs */}
+				<div className="player">
+					<select onChange={this.handleChangePlayer} >
+						<option value="0" defaultValue>Choisir le nombre de joueur</option>
+						<option value="1">Un joueur</option>
+						<option value="2">Deux joueurs</option>
+					</select>
+				</div>
+
 				{/* Selection niveaux */}
 				<div className="level">
 					<select onChange={this.handleChangeLevel} >
@@ -171,7 +192,7 @@ var Memory = React.createClass({
 					</select>
 				</div>
 
-			{/* Selection vitesse de retournement */}
+				{/* Selection vitesse de retournement */}
 				<div className="speedFlip">
 			 		<select onChange={this.handleChangeSpeed} >
 						<option value="0" defaultValue>Choisir la vitesse</option>
