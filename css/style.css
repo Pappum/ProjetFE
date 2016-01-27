@@ -5,6 +5,8 @@
 body{
 	margin: 0;
 	padding: 0;
+	font-family: Arial;
+	background-color: white;
 }
 
 #memory{
@@ -19,12 +21,8 @@ body{
 	overflow: hidden;
 }
 
-.score{
-	float:left;
-}
-
 .cell{
-	border: 1px solid red;
+	border: 1px solid rgba(4, 120, 165, 0.85);
 	float: left;
 	cursor: pointer;
 }
@@ -34,12 +32,72 @@ body{
 	height: 100%;
 }
 
-button{
-	margin-bottom: 10px;
+.player, .level, .speedFlip, .playing{
+	margin:auto;
+}
+
+select, input{
+	height:30px;
+	width:200px;
+    background-color: white;
+    border:0px;
+    margin-top:20px;
+    outline:none;
+}
+
+.player:first-child select{
+	margin-top: 0px;
+}
+
+input{
+	border-radius: 5px;
+	font-size: 14px;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+input:hover{
+	cursor:pointer;
+}
+
+.score{
+	float:left;
+	background-color: rgba(4, 120, 165, 0.85);
+	padding: 30px;
+	border-radius: 15px;
+	font-size: 14px;
+	color:white;
+}
+
+.resultat{
+	float:right;
+	background-color: rgba(4, 120, 165, 0.85);
+	padding: 30px;
+	border-radius: 15px;
+	font-size: 14px;
+	color:white;
+}
+
+.resultat input{
+	display: block;
+}
+
+.menu-wrapper{
+    width: 50%;
+    margin: auto;
+    background-color: rgba(4, 120, 165, 0.85);
+    border-radius: 10px;
+    border: 2px solid black;
+    padding: 40px;
+}
+
+.menu-wrapper span{
+	color:white;
+	text-transform: uppercase;
 }
 
 /* PAS DE LEVEL */
-.level-0{
+.display{
 	display: none;
 }
 
@@ -71,7 +129,11 @@ button{
 }
 
 
-.player, .level, .speedFlip{
-	margin:auto;
-}
+
+
+
+
+
+
+
 

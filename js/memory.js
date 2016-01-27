@@ -4,13 +4,15 @@ var Memory = React.createClass({
 			table: this.generateCards(0),
 			player: 1,
 			nbPlayer: 1,
+			nbShot: 0,
 			level: '',
 			score: '',
 			backUrl: 'img/back.jpg',
 			win: 'false',
 			clickCount: 0,
 			firstCard: '',
-			speed: 1000
+			speed: 1000,
+			started: false,
 		};
 	},
 	generateCards: function(level) {
@@ -97,10 +99,13 @@ var Memory = React.createClass({
 				newTable[x][y].playerWinCard = this.state.player;
 				PC.playerWinCard = this.state.player;
 
-				this.setState({table: newTable, clickCount: 0})
+				var nbShot = this.state.nbShot;
+
+				this.setState({table: newTable, clickCount: 0, nbShot: nbShot+1})
 			}
 			else {
 				var PC = this.state.firstCard;
+				var nbShot = this.state.nbShot;
 				var self = this
 
 				var player
@@ -110,11 +115,11 @@ var Memory = React.createClass({
 
 					if(self.state.nbPlayer != 1){
 						player = self.state.player == 1 ? 2 : 1;
+						self.setState({table: newTable, clickCount: 0, player: player, firstCard: ''})
 					}else{
-						player = 1;
+						self.setState({table: newTable, clickCount: 0, player: 1, firstCard: '', nbShot: nbShot+1})
 					}
 					
-					self.setState({table: newTable, clickCount: 0, player: player, firstCard: ''})
 				}, this.state.speed);
 
 			}
@@ -148,15 +153,23 @@ var Memory = React.createClass({
 		);
 		if(tableFlipped.length == 16) {
 			var winner
-			if(this.getScore(1) > this.getScore(2)) {
-				winner = 'Joueur 1'
+
+			if(this.state.nbPlayer == 1){
+				winner = 'Bravo ! Nombre de coups : '+this.state.nbShot
 			}
-			else if(this.getScore(1) == this.getScore(2)) {
-				winner = 'Egalité'
+			else{
+
+				if(this.getScore(1) > this.getScore(2)) {
+						return winner = 'Le joueur 1 a gagné !'
+				}
+				else if(this.getScore(1) == this.getScore(2)) {
+					return winner = 'Egalité parfaite !'
+				}
+				else {
+					return winner = 'Le joueur 1 a gagné !'
+				}
 			}
-			else {
-				winner = 'Joueur 2'
-			}
+	
 			return winner;
 		}
 	},
@@ -169,22 +182,47 @@ var Memory = React.createClass({
 	handleChangePlayer:function(e){
 		this.setState({nbPlayer: e.target.value});
 	},
-	render: function(){
-		return(
-			<div className="container">
+	startGame:function(){
 
-				{/* Selection du nombre de joueurs */}
+		var playerValue = this.refs.player.value; 
+		var levelValue =  this.refs.level.value; 
+		var speedValue =  this.refs.speedFlip.value; 
+
+		if(playerValue != 0 && levelValue != 0 && speedValue != 0){
+			this.setState({started:true});
+		}else{
+			alert('Sélectionnez tous les champs !!');
+		}
+
+	},
+	reStartGame:function(){
+		this.setState({started:false});
+	},
+	saveScore:function(){
+		$.ajax({
+			url: "http://localhost:3000/hightscore?score="+this.state.nbShot,
+			method: "POST"
+		})
+	},
+	render: function(){
+		var menu = 	( 
+
+			<div className="menu-wrapper">
+
+				<span>Memory Game</span>
+
+				{/* Choisir le nombre de joueur */}
 				<div className="player">
-					<select onChange={this.handleChangePlayer} >
+					<select ref="player" onChange={this.handleChangePlayer} >
 						<option value="0" defaultValue>Choisir le nombre de joueur</option>
 						<option value="1">Un joueur</option>
 						<option value="2">Deux joueurs</option>
 					</select>
 				</div>
 
-				{/* Selection niveaux */}
+				{/* Choisir le niveaux de difficulté */}
 				<div className="level">
-					<select onChange={this.handleChangeLevel} >
+					<select ref="level" onChange={this.handleChangeLevel} >
 						<option value="0" defaultValue>Choisir le niveau</option>
 						<option value="1">16</option>
 						<option value="2">36</option>
@@ -192,9 +230,9 @@ var Memory = React.createClass({
 					</select>
 				</div>
 
-				{/* Selection vitesse de retournement */}
+				{/* Choisir la vitesse du retournement des cartes */}
 				<div className="speedFlip">
-			 		<select onChange={this.handleChangeSpeed} >
+			 		<select ref="speedFlip" onChange={this.handleChangeSpeed} >
 						<option value="0" defaultValue>Choisir la vitesse</option>
 						<option value="1000">1000</option>
 						<option value="500">500</option>
@@ -202,16 +240,42 @@ var Memory = React.createClass({
 					</select>
 				</div>
 
-				{/* Affichage score */}
-				<div className="score">
-					<p>Score joueur 1 = {this.getScore(1)}</p>
-					<p>Score joueur 2 = {this.getScore(2)}</p>
-					<p>All flipped : {this.getAllFlipped()}</p>
+				{/* Lancer la partie */}
+				<div className="playing">
+					<input id="submit" type="submit" value="Play" onClick={this.startGame}/>
 				</div>
 
-				<div className={'level-'+this.state.level}>
+ 			</div>
 
-			 	{/* Affichage jeu */}
+		)
+
+		var score = (
+			<div>
+				{/* Affichage score */}
+				<div className={'score '+this.state.started}>
+
+					{_.times(this.state.nbPlayer).map(i=>{
+						return <p key={i}>Score joueur {i+1} = {this.getScore(i+1)}</p>;
+					})}
+		
+				</div>	
+			</div>
+		)
+
+		var resultat = (
+			<div className={'resultat '+this.state.started}>
+				<p>{this.getAllFlipped()}</p>
+				<input type="submit" value="Enregistre ton score" onClick={this.saveScore}/>
+				<input type="submit" value="Nouvelle partie" onClick={this.reStartGame}/>
+			</div>
+		)
+
+		var jeu = (
+
+			<div>
+				{/* Affichage jeu */}
+				<div className={'level-'+this.state.level +' '+this.state.started}>
+
 				{this.state.table.map(function(_, x){
 					return this.state.table[x].map(function(_, y){
 					var id = x+'-'+y
@@ -231,6 +295,20 @@ var Memory = React.createClass({
 					)
 				}.bind(this))}.bind(this))}
 				</div>
+			</div>
+		)
+
+		return(
+			<div className="container">
+
+				{!this.state.started ? menu : null}
+
+				{this.state.started ? score : null}	
+
+				{this.state.started && this.getAllFlipped() ? resultat : null}	
+
+				{this.state.started ? jeu : null}	
+			
 			 </div>
 		);
 	}
