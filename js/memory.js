@@ -18,6 +18,7 @@ var Memory = React.createClass({
 	generateCards: function(level) {
 		var caseLevel
 		
+		//Nombre de carte en fonction du niveau
 		switch (level) {
 			case '1':
 				caseLevel = 4
@@ -33,6 +34,7 @@ var Memory = React.createClass({
 				break;
 		}
 
+		// Création du tableau de carte et mélange
 		var finalArray = _.times(caseLevel, function(){
 			return _.times(caseLevel, function(){return ''})
 		})
@@ -69,17 +71,19 @@ var Memory = React.createClass({
 	play: function(x, y) {
 		return function() {
 			var newTable = this.state.table
-
 			var firstCardProps
 
+			// Si carte déjà retourné
 			if (newTable[x][y].blocked == true || newTable[x][y] == this.state.firstCard) {
 				return alert('impossible');
 			}
 
+			// Empêche clique sur une 3ème carte
 			if (this.state.clickCount == 2) {
 				return alert('attends');
 			}
 
+			// Retourne la 1ère carte
 			if(this.state.clickCount == 0) {
 				firstCardProps = newTable[x][y]
 
@@ -90,6 +94,7 @@ var Memory = React.createClass({
 			newTable[x][y].isVisible = 1
 			this.setState({clickCount: 2, table: newTable})
 
+			// Si les deux cartes correspondent
 			if(newTable[x][y].url == this.state.firstCard.url) {
 				var PC = this.state.firstCard;
 
@@ -103,6 +108,7 @@ var Memory = React.createClass({
 
 				this.setState({table: newTable, clickCount: 0, nbShot: nbShot+1})
 			}
+			// Si elles ne correspondent pas
 			else {
 				var PC = this.state.firstCard;
 				var nbShot = this.state.nbShot;
@@ -113,6 +119,7 @@ var Memory = React.createClass({
 					newTable[x][y].isVisible = 0;
 					PC.isVisible = 0;
 
+					// Changement de joueur
 					if(self.state.nbPlayer != 1){
 						player = self.state.player == 1 ? 2 : 1;
 						self.setState({table: newTable, clickCount: 0, player: player, firstCard: ''})
@@ -127,6 +134,7 @@ var Memory = React.createClass({
 		}.bind(this)
 	},
 	getScore: function(player) {
+		// Score de chaque joueur
 		var tableInOne = _.flatten(this.state.table, true);
 		var tableScore = tableInOne.filter(
 			function(obj) {
@@ -141,6 +149,7 @@ var Memory = React.createClass({
 		return score;
 	},
 	getAllFlipped: function() {
+		// VICTOIRE !
 		var tableInOne = _.flatten(this.state.table, true);
 		var tableFlipped = tableInOne.filter(
 			function(obj) {
@@ -183,7 +192,7 @@ var Memory = React.createClass({
 		this.setState({nbPlayer: e.target.value});
 	},
 	startGame:function(){
-
+		// Sélection des paramètres et lancement du jeu
 		var playerValue = this.refs.player.value; 
 		var levelValue =  this.refs.level.value; 
 		var speedValue =  this.refs.speedFlip.value; 
