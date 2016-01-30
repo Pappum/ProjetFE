@@ -3,7 +3,7 @@ var Memory = React.createClass({
 		return {
 			table: this.generateCards(0),
 			player: 1,
-			nbPlayer: 1,
+			nbPlayer: '',
 			nbShot: 0,
 			level: '',
 			score: '',
@@ -112,6 +112,7 @@ var Memory = React.createClass({
 			else {
 				var PC = this.state.firstCard;
 				var nbShot = this.state.nbShot;
+				var nbPlayer = this.state.nbPlayer;
 				var self = this
 
 				var player
@@ -120,11 +121,22 @@ var Memory = React.createClass({
 					PC.isVisible = 0;
 
 					// Changement de joueur
-					if(self.state.nbPlayer != 1){
-						player = self.state.player == 1 ? 2 : 1;
-						self.setState({table: newTable, clickCount: 0, player: player, firstCard: ''})
+					// if(self.state.nbPlayer != 1){
+					// 	player = self.state.player == 1 ? 2 : 1;
+					// 	self.setState({table: newTable, clickCount: 0, player: player, firstCard: ''})
+					// }else{
+					// 	self.setState({table: newTable, clickCount: 0, player: 1, firstCard: '', nbShot: nbShot+1})
+					// }
+					if(self.state.player == self.state.nbPlayer){
+						if(self.state.nbPlayer == 1) {
+							self.setState({table: newTable, clickCount: 0, player: 1, firstCard: '', nbShot: nbShot+1})
+						}
+						else {
+							self.setState({table: newTable, clickCount: 0, player: 1, firstCard: ''})
+						}
 					}else{
-						self.setState({table: newTable, clickCount: 0, player: 1, firstCard: '', nbShot: nbShot+1})
+						var newPlayer = self.state.player + 1;
+						self.setState({table: newTable, clickCount: 0, player: newPlayer, firstCard: ''})
 					}
 					
 				}, this.state.speed);
@@ -168,14 +180,26 @@ var Memory = React.createClass({
 			}
 			else{
 
-				if(this.getScore(1) > this.getScore(2)) {
-						return winner = 'Le joueur 1 a gagné !'
-				}
-				else if(this.getScore(1) == this.getScore(2)) {
-					return winner = 'Egalité parfaite !'
+				var score = []
+				for (var i = 1 ; i <= this.state.nbPlayer ; i++) {
+					score.push({
+						'joueur': 'Joueur ' + i,
+						'score': this.getScore(i)
+					})
+				};
+
+				// Tableau des score trié
+				var sortScore = _.sortBy(score, function(o) { return o.score; });
+				// Récupère le score le plus haut
+				var last = _.last(sortScore);
+
+				// Vérification s'il y a une égalité ou non
+				var verifDraw = sortScore.filter(function (a) { return a.score == last.score });
+				if(verifDraw.length > 1) {
+					winner = 'Egalité';
 				}
 				else {
-					return winner = 'Le joueur 1 a gagné !'
+					winner = last.joueur;
 				}
 			}
 	
@@ -226,6 +250,8 @@ var Memory = React.createClass({
 						<option value="0" defaultValue>Choisir le nombre de joueur</option>
 						<option value="1">Un joueur</option>
 						<option value="2">Deux joueurs</option>
+						<option value="3">Trois joueurs</option>
+						<option value="4">Quatre joueurs</option>
 					</select>
 				</div>
 
@@ -267,7 +293,10 @@ var Memory = React.createClass({
 						return <p key={i}>Score joueur {i+1} = {this.getScore(i+1)}</p>;
 					})}
 		
-				</div>	
+				</div>
+				<div>
+					<p>Joueur en cours : {this.state.player}</p>
+				</div>
 			</div>
 		)
 
