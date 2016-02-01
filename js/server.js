@@ -1,23 +1,30 @@
 var express = require('express');
 var app = express();
+var path = require('path');
 
-var highscores = [20];
+var highscores = [800, 600, 550, 450];
 
 app.use(function(req,res,next){
 	res.header('Access-Control-Allow-Origin','*');
 	next();
 });
 
-app.post('/hightscore', function (req, res) {
- 
-console.log(req);
-console.log(req.query);
-console.log(req.query.score);
-  res.send('Hello World!');
+app.use(express.static(path.resolve(__dirname, "..")));
+
+app.post('/highscore', function (req, res) {
+
+  	var score = +req.query.score;
+  	highscores.push(score);
+
+  	highscores.sort(function(a, b) {
+    	return b - a;
+	});
+
+  res.send('ok');
 });
 
 
-app.get('/hightscore', function (req, res) {
+app.get('/highscore', function (req, res) {
   res.json(highscores);
 });
 

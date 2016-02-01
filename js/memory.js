@@ -6,9 +6,10 @@ var Memory = React.createClass({
 			nbPlayer: '',
 			nbShot: 0,
 			level: '',
-			score: '',
+			score: 0,
 			backUrl: 'img/back.jpg',
 			clickCount: 0,
+			highscores: [],
 			firstCard: '',
 			speed: 1000,
 			started: false,
@@ -21,7 +22,7 @@ var Memory = React.createClass({
 		//Nombre de carte en fonction du niveau
 		switch (level) {
 			case '1':
-				caseLevel = 4
+				caseLevel = 2
 				break;
 			case '2':
 				caseLevel = 6
@@ -112,8 +113,10 @@ var Memory = React.createClass({
 				PC.playerWinCard = this.state.player;
 
 				var nbShot = this.state.nbShot;
+				var time = this.state.timeElapsed;
+				var scoreFinal = parseInt((time * 2) / (nbShot * 4) * 1000)
 
-				this.setState({table: newTable, clickCount: 0, nbShot: nbShot+1})
+				this.setState({table: newTable, clickCount: 0, nbShot: nbShot+1, score: scoreFinal})
 			}
 			// Si elles ne correspondent pas
 			else {
@@ -121,8 +124,8 @@ var Memory = React.createClass({
 				var nbShot = this.state.nbShot;
 				var nbPlayer = this.state.nbPlayer;
 				var self = this
-
 				var player
+
 				setTimeout(function() {
 					newTable[x][y].isVisible = 0;
 					PC.isVisible = 0;
@@ -130,6 +133,7 @@ var Memory = React.createClass({
 					// Changement de joueur
 					if(self.state.player == self.state.nbPlayer){
 						if(self.state.nbPlayer == 1) {
+
 							self.setState({table: newTable, clickCount: 0, player: 1, firstCard: '', nbShot: nbShot+1})
 						}
 						else {
@@ -175,11 +179,8 @@ var Memory = React.createClass({
 		);
 		if(tableFlipped.length != 0 && tableFlipped.length == tableInOne.length) {
 			var winner
-
 			if(this.state.nbPlayer == 1){
-				var score = parseInt((this.state.timeElapsed * 2) / (this.state.nbShot * 4) * 1000)
-				// winner = 'Bravo ! Nombre de coups : '+this.state.nbShot+'\n Score : '+score
-				winner = 'Score : '+score
+				winner = 'Score : '+this.state.score
 				clearInterval(this.interval)
 			}
 			else{
@@ -187,13 +188,14 @@ var Memory = React.createClass({
 				var scores = []
 				for (var i = 1 ; i <= this.state.nbPlayer ; i++) {
 					scores.push({
-						'joueur': 'Joueur ' + i,
+						'joueur': 'Gagnant : Joueur ' + i,
 						'score': this.getScore(i)
 					})
 				};
 
 				// Tableau des score trié
 				var sortScores = _.sortBy(scores, function(o) { return o.scores; });
+
 				// Récupère le score le plus haut
 				var last = _.last(sortScores);
 
@@ -229,17 +231,26 @@ var Memory = React.createClass({
 			this.setState({started: true});
 			this.interval = setInterval(this.tick,1000)
 		}else{
-			alert('Sélectionnez tous les champs !!');
+			alert('Sélectionnez tous les champs !');
 		}
 
 	},
 	reStartGame:function(){
-		this.setState({started:false});
+		this.setState({started:false, highscores:[], nbShot: 0, timeElapsed: 0});
 	},
 	saveScore:function(){
+		var self = this;
 		$.ajax({
-			url: "http://localhost:3000/hightscore?score="+this.state.nbShot,
+			url: "http://localhost:3000/highscore?score="+this.state.score,
 			method: "POST"
+		}).done(function(){
+			$.ajax({
+				url: "http://localhost:3000/highscore",
+				method: "GET"
+			}).done(function(highscores){
+				console.log(highscores)
+				self.setState({highscores:highscores})
+			})
 		})
 	},
 
@@ -345,13 +356,30 @@ var Memory = React.createClass({
 			</div>
 		)
 
+		var highscoreJsx;
+		var self = this;
+
+		if(this.state.highscores.length > 0) {
+			highscoreJsx = this.state.highscores.map(function(highscore,i){
+				var style = self.state.score == highscore ? {backgroundColor:"red"} : {}
+				return <li key={i} style={style}>{highscore}</li>;
+			});
+			highscoreJsx.unshift(<p key="highscore">Liste des scores :</p>);
+		}
+		else {
+			highscoreJsx = <input type="submit" value="Enregistre ton score" onClick={this.saveScore}/>
+		}
+
 		var resultat = (
 			<div className={'resultat '+this.state.started}>
 				<p>{this.getAllFlipped()}</p>
-				<input type="submit" value="Enregistre ton score" onClick={this.saveScore}/>
+
+				{this.state.nbPlayer == 1 ? highscoreJsx : null}
+
 				<input type="submit" value="Nouvelle partie" onClick={this.reStartGame}/>
 			</div>
 		)
+
 
 		var jeu = (
 

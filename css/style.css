@@ -78,6 +78,12 @@ input:hover{
 	color:white;
 }
 
+.resultat li{
+	border-top: 2px solid black;
+    list-style: none;
+    padding: 10px;
+}
+
 .resultat input{
 	display: block;
 }
