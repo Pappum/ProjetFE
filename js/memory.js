@@ -1,22 +1,3 @@
-var Timer = React.createClass({
-	getInitialState: function(){
-		return { timeElapsed : 0};
-	},
-	tick: function() {
-		this.props.timerListener(this.state.timeElapsed+1)
-		this.setState({timeElapsed: this.state.timeElapsed+1})
-	},
-	componentDidMount: function(){
-		this.interval = setInterval(this.tick,1000)
-	},
-	componentWillUnmount: function(){
-		clearInterval(this.interval)
-	},
-	render: function() {
-		return (<div className="timer">Temps écoulé : {this.state.timeElapsed}s</div>)
-	}
-});
-
 var Memory = React.createClass({
 	getInitialState: function(){
 		return {
@@ -31,6 +12,7 @@ var Memory = React.createClass({
 			firstCard: '',
 			speed: 1000,
 			started: false,
+			timeElapsed : 0
 		};
 	},
 	generateCards: function(level) {
@@ -196,6 +178,7 @@ var Memory = React.createClass({
 
 			if(this.state.nbPlayer == 1){
 				winner = 'Bravo ! Nombre de coups : '+this.state.nbShot
+				clearInterval(this.interval)
 			}
 			else{
 
@@ -242,6 +225,7 @@ var Memory = React.createClass({
 
 		if(playerValue != 0 && levelValue != 0 && speedValue != 0){
 			this.setState({started: true});
+			this.interval = setInterval(this.tick,1000)
 		}else{
 			alert('Sélectionnez tous les champs !!');
 		}
@@ -256,6 +240,14 @@ var Memory = React.createClass({
 			method: "POST"
 		})
 	},
+
+	tick: function() {
+		this.setState({timeElapsed: this.state.timeElapsed+1})
+	},
+	componentWillUnmount: function(){
+		clearInterval(this.interval)
+	},
+
 	render: function(){
 
 		var options
@@ -321,7 +313,7 @@ var Memory = React.createClass({
 
 		{/* Timer */}
 		var time = (
-			<Timer timerListener={function(time) { console.log(time); }}/>
+			<p>Temps écoulé : {this.state.timeElapsed}s</p>
 		)	
 
 		var score = (
