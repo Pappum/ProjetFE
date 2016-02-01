@@ -13,7 +13,7 @@ var Timer = React.createClass({
 		clearInterval(this.interval)
 	},
 	render: function() {
-		return (<div className="timer">Time elapsed is : {this.state.timeElapsed}</div>)
+		return (<div className="timer">Temps écoulé : {this.state.timeElapsed}s</div>)
 	}
 });
 
@@ -27,7 +27,6 @@ var Memory = React.createClass({
 			level: '',
 			score: '',
 			backUrl: 'img/back.jpg',
-			win: 'false',
 			clickCount: 0,
 			firstCard: '',
 			speed: 1000,
@@ -270,8 +269,7 @@ var Memory = React.createClass({
 		var optionJsx = options.map(function(level, i){
 			return <option key={i} value={i+1}>{level}</option>
 		})
-						
-
+			
 		var menu = 	( 
 
 			<div className="menu-wrapper">
@@ -288,8 +286,6 @@ var Memory = React.createClass({
 						<option value="4">Quatre joueurs</option>
 					</select>
 				</div>
-
-				<Timer timerListener={function(time) { console.log(time); }}/>
 
 				{/* Choisir le niveaux de difficulté */}
 				<div className="level">
@@ -318,9 +314,15 @@ var Memory = React.createClass({
 
 		)
 		
+		{/* Joueur en cours */}
 		var player = (
 			<p>Joueur en cours : {this.state.player}</p>
 		)
+
+		{/* Timer */}
+		var time = (
+			<Timer timerListener={function(time) { console.log(time); }}/>
+		)	
 
 		var score = (
 			<div>
@@ -331,7 +333,11 @@ var Memory = React.createClass({
 						return <p key={i}>Score joueur {i+1} = {this.getScore(i+1)}</p>;
 					})}
 
+					{/* Affiche joueur en cours */}
 					{this.state.nbPlayer != 1 ? player : null}
+
+					{/* Affichage Timer */}
+					{this.state.nbPlayer == 1 ? time : null}
 
 				</div>
 			</div>
