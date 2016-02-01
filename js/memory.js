@@ -177,26 +177,28 @@ var Memory = React.createClass({
 			var winner
 
 			if(this.state.nbPlayer == 1){
-				winner = 'Bravo ! Nombre de coups : '+this.state.nbShot
+				var score = parseInt((this.state.timeElapsed * 2) / (this.state.nbShot * 4) * 1000)
+				// winner = 'Bravo ! Nombre de coups : '+this.state.nbShot+'\n Score : '+score
+				winner = 'Score : '+score
 				clearInterval(this.interval)
 			}
 			else{
 
-				var score = []
+				var scores = []
 				for (var i = 1 ; i <= this.state.nbPlayer ; i++) {
-					score.push({
+					scores.push({
 						'joueur': 'Joueur ' + i,
 						'score': this.getScore(i)
 					})
 				};
 
 				// Tableau des score trié
-				var sortScore = _.sortBy(score, function(o) { return o.score; });
+				var sortScores = _.sortBy(scores, function(o) { return o.scores; });
 				// Récupère le score le plus haut
-				var last = _.last(sortScore);
+				var last = _.last(sortScores);
 
 				// Vérification s'il y a une égalité ou non
-				var verifDraw = sortScore.filter(function (a) { return a.score == last.score });
+				var verifDraw = sortScores.filter(function (a) { return a.scores == last.score });
 				if(verifDraw.length > 1) {
 					winner = 'Egalité';
 				}
@@ -314,6 +316,11 @@ var Memory = React.createClass({
 		{/* Timer */}
 		var time = (
 			<p>Temps écoulé : {this.state.timeElapsed}s</p>
+		)
+
+		{/* Nombre de coups */}
+		var nbShots = (
+			<p>Nombre de coups : {this.state.nbShot}</p>
 		)	
 
 		var score = (
@@ -330,6 +337,9 @@ var Memory = React.createClass({
 
 					{/* Affichage Timer */}
 					{this.state.nbPlayer == 1 ? time : null}
+
+					{/* Affichage Nombre de coups */}
+					{this.state.nbPlayer == 1 ? nbShots : null}
 
 				</div>
 			</div>
