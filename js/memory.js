@@ -44,8 +44,15 @@ var Memory = React.createClass({
 
 		var nbrImg = (caseLevel * caseLevel) / 2
 
+		var idCards = [];
+		for (var i = 1 ; i <= 32; i++) {
+			idCards.push(i);
+		}
+		idCards = _.shuffle(idCards);
+
 		for (var i = 1 ; i <= nbrImg; i++) {
-			images.push("img/" + i + ".jpg");
+			var id = idCards[i];
+			images.push("img/" + id + ".jpg");
 		}
 		images = images.concat(images);
 		images = _.shuffle(images);
@@ -121,12 +128,6 @@ var Memory = React.createClass({
 					PC.isVisible = 0;
 
 					// Changement de joueur
-					// if(self.state.nbPlayer != 1){
-					// 	player = self.state.player == 1 ? 2 : 1;
-					// 	self.setState({table: newTable, clickCount: 0, player: player, firstCard: ''})
-					// }else{
-					// 	self.setState({table: newTable, clickCount: 0, player: 1, firstCard: '', nbShot: nbShot+1})
-					// }
 					if(self.state.player == self.state.nbPlayer){
 						if(self.state.nbPlayer == 1) {
 							self.setState({table: newTable, clickCount: 0, player: 1, firstCard: '', nbShot: nbShot+1})
@@ -172,7 +173,7 @@ var Memory = React.createClass({
 				}
 			}
 		);
-		if(tableFlipped.length == 16) {
+		if(tableFlipped.length != 0 && tableFlipped.length == tableInOne.length) {
 			var winner
 
 			if(this.state.nbPlayer == 1){
