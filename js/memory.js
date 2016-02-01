@@ -17,23 +17,7 @@ var Memory = React.createClass({
 		};
 	},
 	generateCards: function(level) {
-		var caseLevel
-		
-		//Nombre de carte en fonction du niveau
-		switch (level) {
-			case '16':
-				caseLevel = 2
-				break;
-			case '36':
-				caseLevel = 6
-				break;
-			case '64':
-				caseLevel = 8
-				break;
-			default:
-				caseLevel = 0
-				break;
-		}
+		var caseLevel = Math.sqrt(parseInt(level));
 
 		// Création du tableau de carte et mélange
 		var finalArray = _.times(caseLevel, function(){
