@@ -1,3 +1,22 @@
+var Timer = React.createClass({
+	getInitialState: function(){
+		return { timeElapsed : 0};
+	},
+	tick: function() {
+		this.props.timerListener(this.state.timeElapsed+1)
+		this.setState({timeElapsed: this.state.timeElapsed+1})
+	},
+	componentDidMount: function(){
+		this.interval = setInterval(this.tick,1000)
+	},
+	componentWillUnmount: function(){
+		clearInterval(this.interval)
+	},
+	render: function() {
+		return (<div className="timer">Time elapsed is : {this.state.timeElapsed}</div>)
+	}
+});
+
 var Memory = React.createClass({
 	getInitialState: function(){
 		return {
@@ -223,7 +242,7 @@ var Memory = React.createClass({
 		var speedValue =  this.refs.speedFlip.value; 
 
 		if(playerValue != 0 && levelValue != 0 && speedValue != 0){
-			this.setState({started:true});
+			this.setState({started: true});
 		}else{
 			alert('Sélectionnez tous les champs !!');
 		}
@@ -270,6 +289,8 @@ var Memory = React.createClass({
 					</select>
 				</div>
 
+				<Timer timerListener={function(time) { console.log(time); }}/>
+
 				{/* Choisir le niveaux de difficulté */}
 				<div className="level">
 						<select ref="level" onChange={this.handleChangeLevel} >
@@ -280,7 +301,7 @@ var Memory = React.createClass({
 
 				{/* Choisir la vitesse du retournement des cartes */}
 				<div className="speedFlip">
-			 		<select ref="speedFlip" onChange={this.handleChangeSpeed} >
+					<select ref="speedFlip" onChange={this.handleChangeSpeed} >
 						<option value="0" defaultValue>Choisir la vitesse</option>
 						<option value="1000">1000</option>
 						<option value="500">500</option>
@@ -293,7 +314,7 @@ var Memory = React.createClass({
 					<input id="submit" type="submit" value="Play" onClick={this.startGame}/>
 				</div>
 
- 			</div>
+			</div>
 
 		)
 		
