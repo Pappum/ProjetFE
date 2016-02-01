@@ -249,7 +249,7 @@ var Memory = React.createClass({
 		}
 		
 		var optionJsx = options.map(function(level, i){
-			return <option key={i} value={i}>{level}</option>
+			return <option key={i} value={i+1}>{level}</option>
 		})
 						
 
@@ -296,6 +296,10 @@ var Memory = React.createClass({
  			</div>
 
 		)
+		
+		var player = (
+			<p>Joueur en cours : {this.state.player}</p>
+		)
 
 		var score = (
 			<div>
@@ -305,10 +309,9 @@ var Memory = React.createClass({
 					{_.times(this.state.nbPlayer).map(i=>{
 						return <p key={i}>Score joueur {i+1} = {this.getScore(i+1)}</p>;
 					})}
-		
-				</div>
-				<div>
-					<p>Joueur en cours : {this.state.player}</p>
+
+					{this.state.nbPlayer != 1 ? player : null}
+
 				</div>
 			</div>
 		)
