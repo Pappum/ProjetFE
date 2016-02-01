@@ -108,29 +108,29 @@ input:hover{
 }
 
 /* LEVEL 1 */
-.level-1{
+.level-16{
 	width:40%;
 	margin:auto;
 }
-.level-1 .cell{
+.level-16 .cell{
 	width: 25%;
 }
 
 /* LEVEL 2 */
-.level-2{
+.level-36{
 	width:60%;
 	margin:auto;
 }
-.level-2 .cell{
+.level-36 .cell{
 	width: 15%;
 }
 
 /* LEVEL 3 */
-.level-3{
+.level-64{
 	width:55%;
 	margin:auto;
 }
-.level-3 .cell{
+.level-64 .cell{
 	width: 12%;
 }
 

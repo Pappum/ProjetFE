@@ -30,5 +30,5 @@ app.get('/highscore', function (req, res) {
 
 
 app.listen(3000, function () {
-  console.log('TEST');
+  console.log('script');
 });

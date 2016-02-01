@@ -21,13 +21,13 @@ var Memory = React.createClass({
 		
 		//Nombre de carte en fonction du niveau
 		switch (level) {
-			case '1':
+			case '16':
 				caseLevel = 2
 				break;
-			case '2':
+			case '36':
 				caseLevel = 6
 				break;
-			case '3':
+			case '64':
 				caseLevel = 8
 				break;
 			default:
@@ -253,7 +253,22 @@ var Memory = React.createClass({
 			})
 		})
 	},
-
+	saveScorePhp:function(){
+		var self = this;
+		$.ajax({
+			url: "php/save.php",
+			data: {
+                score : this.state.score,
+            }
+		}).done(function(){
+			$.ajax({
+				url: "php/list.php",
+			}).done(function(data){
+				var data = JSON.parse(data);
+				self.setState({highscores: data})
+			})
+		}) 
+	},
 	tick: function() {
 		this.setState({timeElapsed: this.state.timeElapsed+1})
 	},
@@ -272,7 +287,7 @@ var Memory = React.createClass({
 		}
 		
 		var optionJsx = options.map(function(level, i){
-			return <option key={i} value={i+1}>{level}</option>
+			return <option key={i} value={level}>{level}</option>
 		})
 			
 		var menu = 	( 
@@ -367,13 +382,13 @@ var Memory = React.createClass({
 			highscoreJsx.unshift(<p key="highscore">Liste des scores :</p>);
 		}
 		else {
-			highscoreJsx = <input type="submit" value="Enregistre ton score" onClick={this.saveScore}/>
+			highscoreJsx = <input type="submit" value="Enregistre ton score" onClick={this.saveScorePhp}/>
 		}
 
 		var resultat = (
 			<div className={'resultat '+this.state.started}>
 				<p>{this.getAllFlipped()}</p>
-
+				<div id="result"></div>
 				{this.state.nbPlayer == 1 ? highscoreJsx : null}
 
 				<input type="submit" value="Nouvelle partie" onClick={this.reStartGame}/>
