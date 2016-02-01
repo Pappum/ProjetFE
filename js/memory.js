@@ -239,6 +239,20 @@ var Memory = React.createClass({
 		})
 	},
 	render: function(){
+
+		var options
+
+		if(this.state.nbPlayer > 2){
+			options = [36,64];
+		}else{
+			options = [16,36,64];
+		}
+		
+		var optionJsx = options.map(function(level, i){
+			return <option key={i} value={i}>{level}</option>
+		})
+						
+
 		var menu = 	( 
 
 			<div className="menu-wrapper">
@@ -258,11 +272,9 @@ var Memory = React.createClass({
 
 				{/* Choisir le niveaux de difficulté */}
 				<div className="level">
-					<select ref="level" onChange={this.handleChangeLevel} >
+						<select ref="level" onChange={this.handleChangeLevel} >
 						<option value="0" defaultValue>Choisir le niveau</option>
-						<option value="1">16</option>
-						<option value="2">36</option>
-						<option value="3">64</option>
+						{optionJsx}
 					</select>
 				</div>
 
