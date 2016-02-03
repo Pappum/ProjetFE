@@ -30,13 +30,14 @@ var Memory = React.createClass({
 		var nbrImg = (caseLevel * caseLevel) / 2
 
 		var idCards = [];
-		for (var i = 1 ; i <= 32; i++) {
+		for (var i = 1 ; i <= 33; i++) {
 			idCards.push(i);
 		}
 		idCards = _.shuffle(idCards);
 
 		for (var i = 1 ; i <= nbrImg; i++) {
 			var id = idCards[i];
+			console.log(id)
 			images.push("img/" + id + ".jpg");
 		}
 		images = images.concat(images);
