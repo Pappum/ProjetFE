@@ -27,7 +27,7 @@ var Memory = React.createClass({
 		var images = [];
 		var cards = [];
 
-		var nbrImg = (caseLevel * caseLevel) / 2
+		var nbrImg = level / 2
 
 		var idCards = [];
 		for (var i = 1 ; i <= 33; i++) {
@@ -117,17 +117,18 @@ var Memory = React.createClass({
 
 					// Changement de joueur
 					if(self.state.player == self.state.nbPlayer){
-						if(self.state.nbPlayer == 1) {
 
-							self.setState({table: newTable, clickCount: 0, player: 1, firstCard: '', nbShot: nbShot+1})
+						if(self.state.nbPlayer == 1) {
+							return self.setState({table: newTable, clickCount: 0, player: 1, firstCard: '', nbShot: nbShot+1})
 						}
-						else {
-							self.setState({table: newTable, clickCount: 0, player: 1, firstCard: ''})
-						}
-					}else{
-						var newPlayer = self.state.player + 1;
-						self.setState({table: newTable, clickCount: 0, player: newPlayer, firstCard: ''})
+
+						return self.setState({table: newTable, clickCount: 0, player: 1, firstCard: ''})
+						
 					}
+
+					var newPlayer = self.state.player + 1;
+					self.setState({table: newTable, clickCount: 0, player: newPlayer, firstCard: ''})
+					
 					
 				}, this.state.speed);
 
@@ -155,11 +156,9 @@ var Memory = React.createClass({
 		var tableInOne = _.flatten(this.state.table, true);
 		var tableFlipped = tableInOne.filter(
 			function(obj) {
-				if (obj.blocked == 1) {
-					return true;
-				} else {
-					return false;
-				}
+
+				return obj.blocked == 1;
+				
 			}
 		);
 		if(tableFlipped.length != 0 && tableFlipped.length == tableInOne.length) {
@@ -318,6 +317,36 @@ var Memory = React.createClass({
 			</div>
 
 		)
+
+
+		var jeu = (
+
+			<div>
+				{/* Affichage jeu */}
+				<div className={'level-'+this.state.level +' '+this.state.started}>
+
+				{this.state.table.map(function(_, x){
+					return this.state.table[x].map(function(_, y){
+					var id = x+'-'+y
+
+					var src
+					if (this.state.table[x][y].isVisible == 1) {
+						src = this.state.table[x][y].url
+					}
+					else {
+						src = this.state.backUrl
+					}
+
+					return (
+						<div className='cell' id={id} onClick={this.play(x, y)}>
+							<img src={src} />
+						</div>
+					)
+				}.bind(this))}.bind(this))}
+				</div>
+			</div>
+		)
+
 		
 		{/* Joueur en cours */}
 		var player = (
@@ -377,35 +406,6 @@ var Memory = React.createClass({
 				{this.state.nbPlayer == 1 ? highscoreJsx : null}
 
 				<input type="submit" value="Nouvelle partie" onClick={this.reStartGame}/>
-			</div>
-		)
-
-
-		var jeu = (
-
-			<div>
-				{/* Affichage jeu */}
-				<div className={'level-'+this.state.level +' '+this.state.started}>
-
-				{this.state.table.map(function(_, x){
-					return this.state.table[x].map(function(_, y){
-					var id = x+'-'+y
-
-					var src
-					if (this.state.table[x][y].isVisible == 1) {
-						src = this.state.table[x][y].url
-					}
-					else {
-						src = this.state.backUrl
-					}
-
-					return (
-						<div className='cell' id={id} onClick={this.play(x, y)}>
-							<img src={src} />
-						</div>
-					)
-				}.bind(this))}.bind(this))}
-				</div>
 			</div>
 		)
 
