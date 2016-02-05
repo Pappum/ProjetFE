@@ -37,7 +37,6 @@ var Memory = React.createClass({
 
 		for (var i = 1 ; i <= nbrImg; i++) {
 			var id = idCards[i];
-			console.log(id)
 			images.push("img/" + id + ".jpg");
 		}
 		images = images.concat(images);
